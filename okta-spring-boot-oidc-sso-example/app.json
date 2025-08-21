@@ -1,0 +1,8 @@
+{
+  "name": "SSO with Spring Boot, OIDC & Okta",
+  "description": "This app demonstrates integrating a simple Spring Boot / Spring Security app with Okta using OIDC. An Okta org is provisioned. Look at the app environment variables for login info.",
+  "repository": "https://github.com/oktadeveloper/okta-spring-boot-oidc-sso-example/tree/master",
+  "keywords": ["oidc", "identity", "security", "authentication"],
+  "success_url": "/",
+  "addons": [ "okta" ]
+}
