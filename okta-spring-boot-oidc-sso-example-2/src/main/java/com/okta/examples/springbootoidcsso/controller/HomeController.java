@@ -13,7 +13,7 @@ public class HomeController {
 
     ObjectMapper mapper = new ObjectMapper();
 
-    @GetMapping("/check")
+    @GetMapping("/indexB")
     public ModelAndView home(@AuthenticationPrincipal OidcUser user) throws JsonProcessingException {
         ModelAndView mav = new ModelAndView();
         mav.addObject("user", user.getUserInfo());

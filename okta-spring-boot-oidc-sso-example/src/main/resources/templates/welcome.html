@@ -1,14 +1,55 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Welcome</title>
+    <meta charset="UTF-8">
+    <title>Welcome - Cereberus</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body>
-<h1>Welcome to the SSO Demo</h1>
-<p>This page is public. Choose an app to continue:</p>
-<ul>
-    <li><a href="http://localhost:8080/profile">OIDC App 1 (8080)</a></li>
-    <li><a href="http://localhost:8081/profile">OIDC App 2 (8081)</a></li>
-</ul>
+<body class="bg-gray-100 font-sans">
+
+<!-- Navbar -->
+<nav class="bg-blue-600 p-4 text-white flex justify-between items-center shadow">
+    <h1 class="text-xl font-bold">Cereberus</h1>
+    <div class="flex items-center gap-6 text-lg">
+        <a href="#" class="hover:text-gray-200">
+            <i class="fas fa-home"></i>
+        </a>
+    </div>
+</nav>
+
+<!-- Welcome Section -->
+<header class="p-10 text-center">
+    <h2 class="text-3xl font-semibold text-gray-800">Welcome to Cereberus 🎉</h2>
+    <p class="text-gray-600 mt-2">Choose an app to continue:</p>
+</header>
+
+<!-- App Selection -->
+<main class="flex flex-col md:flex-row justify-center gap-8 px-6 pb-12">
+    <!-- Task Manager -->
+    <a href="http://localhost:8080/indexA"
+       class="bg-white rounded-2xl shadow-lg p-6 w-full md:w-1/3 hover:shadow-2xl transition transform hover:-translate-y-2">
+        <div class="flex flex-col items-center space-y-4">
+            <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-2xl shadow">
+                <i class="fas fa-tasks"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-800">Task Manager</h3>
+            <p class="text-gray-600 text-center">Organize and track your daily tasks efficiently.</p>
+        </div>
+    </a>
+
+    <!-- LeanHub -->
+    <a href="http://localhost:8081/indexB"
+       class="bg-white rounded-2xl shadow-lg p-6 w-full md:w-1/3 hover:shadow-2xl transition transform hover:-translate-y-2">
+        <div class="flex flex-col items-center space-y-4">
+            <div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-2xl shadow">
+                <i class="fas fa-lightbulb"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-800">LeanHub</h3>
+            <p class="text-gray-600 text-center">Collaborate and share innovative ideas with your team.</p>
+        </div>
+    </a>
+</main>
+
 </body>
 </html>

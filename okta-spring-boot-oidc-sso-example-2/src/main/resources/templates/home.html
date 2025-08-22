@@ -1,37 +1,84 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <!--/*/ <th:block th:include="fragments/head :: head"/> /*/-->
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <title>Learning Platform</title>
+    <script src="https://cdn.tailwindcss.com">
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50 font-sans">
 
-    <body>
-        <div class="container-fluid">
-            <div class="row justify-content-md-center">
-                <div class="w-75">
-                    <p/>
-                    <p/>
-                    <div th:if="${user.claims.containsKey('name')}"
-                        class="alert alert-primary text-center" role="alert"
-                    >
-                        <h3 th:inline="text">Welcome [[${user.claims.name}]]!</h3>
-                    </div>
-                    <div class="alert alert-secondary text-center">
-                        <h3 class="text-left">ID Token</h3>
-                        <p th:inline="text" class="text-break" style="overflow-wrap: break-word">
-                            [[${idToken}]]
-                        </p>
-                    </div>
-                    <div class="alert alert-secondary">
-                        <h3>ID Token Payload</h3>
-                        <textarea id="code" th:text="${claims}"></textarea>
-                    </div>
-                </div>
+<!-- Navbar -->
+<nav class="bg-indigo-600 p-4 text-white flex justify-between items-center shadow">
+    <h1 class="text-xl font-bold">LearnHub</h1>
+    <div class="flex items-center gap-6 text-lg">
+        <!-- Profile Icon -->
+        <a href="profile" class="hover:text-gray-200">
+            <i class="fas fa-user-circle"></i>
+        </a>
+        <!-- Logout Icon -->
+        <form th:action="@{/logout}" method="post" style="display:inline;">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+            <button type="submit" style="background:none;border:none;cursor:pointer;">
+                <i class="fas fa-sign-out-alt hover:text-gray-200"></i>
+            </button>
+        </form>
+
+    </div>
+</nav>
+
+
+
+<!-- Hero -->
+<header class="p-6 text-center">
+    <h2 class="text-2xl font-semibold">Welcome back, [[${user.claims.name}]] 🎓</h2>
+    <p class="text-gray-600">Keep learning and achieve your goals 🚀</p>
+</header>
+
+<!-- My Courses -->
+<section class="px-6">
+    <h3 class="text-xl font-bold mb-4">📚 My Courses</h3>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+        <div class="bg-white rounded-2xl shadow p-4">
+            <h4 class="font-semibold text-lg">Spring Boot Basics</h4>
+            <p class="text-gray-500 text-sm">Progress</p>
+            <div class="w-full bg-gray-200 rounded-full h-2 mt-2">
+                <div class="bg-green-500 h-2 rounded-full" style="width: 70%"></div>
             </div>
         </div>
-        <script th:inline="text">
-            var editor = CodeMirror.fromTextArea(document.getElementById('code'), {
-                lineNumbers: true, mode: 'application/json'
-            });
-        </script>
-    </body>
+
+        <div class="bg-white rounded-2xl shadow p-4">
+            <h4 class="font-semibold text-lg">Java Advanced</h4>
+            <p class="text-gray-500 text-sm">Progress</p>
+            <div class="w-full bg-gray-200 rounded-full h-2 mt-2">
+                <div class="bg-green-500 h-2 rounded-full" style="width: 40%"></div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- Recommended -->
+<section class="px-6 mt-8">
+    <h3 class="text-xl font-bold mb-4">✨ Recommended Courses</h3>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+        <div class="bg-white rounded-2xl shadow p-4 hover:shadow-lg transition">
+            <h4 class="font-semibold text-lg">React for Beginners</h4>
+            <p class="text-gray-500 text-sm">Frontend Development</p>
+            <button class="mt-3 bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600">Enroll</button>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow p-4 hover:shadow-lg transition">
+            <h4 class="font-semibold text-lg">Docker Essentials</h4>
+            <p class="text-gray-500 text-sm">DevOps</p>
+            <button class="mt-3 bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600">Enroll</button>
+        </div>
+
+    </div>
+</section>
+
+</body>
 </html>

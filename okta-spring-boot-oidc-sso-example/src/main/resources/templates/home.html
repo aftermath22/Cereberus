@@ -1,37 +1,73 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <!--/*/ <th:block th:include="fragments/head :: head"/> /*/-->
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <title>Task Manager</title>
+    <script src="https://cdn.tailwindcss.com">
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-100 font-sans">
 
-    <body>
-        <div class="container-fluid">
-            <div class="row justify-content-md-center">
-                <div class="w-75">
-                    <p/>
-                    <p/>
-                    <div th:if="${user.claims.containsKey('name')}"
-                        class="alert alert-primary text-center" role="alert"
-                    >
-                        <h3 th:inline="text">Welcome [[${user.claims.name}]]!</h3>
-                    </div>
-                    <div class="alert alert-secondary text-center">
-                        <h3 class="text-left">ID Token</h3>
-                        <p th:inline="text" class="text-break" style="overflow-wrap: break-word">
-                            [[${idToken}]]
-                        </p>
-                    </div>
-                    <div class="alert alert-secondary">
-                        <h3>ID Token Payload</h3>
-                        <textarea id="code" th:text="${claims}"></textarea>
-                    </div>
-                </div>
-            </div>
+<!-- Navbar -->
+<nav class="bg-blue-600 p-4 text-white flex justify-between items-center shadow">
+    <h1 class="text-xl font-bold">Task Manager</h1>
+    <div class="flex items-center gap-6 text-lg">
+        <!-- Profile Icon -->
+        <a href="profile" class="hover:text-gray-200">
+            <i class="fas fa-user-circle"></i>
+        </a>
+        <!-- Logout Icon -->
+        <form th:action="@{/logout}" method="post" style="display:inline;">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+            <button type="submit" style="background:none;border:none;cursor:pointer;">
+                <i class="fas fa-sign-out-alt hover:text-gray-200"></i>
+            </button>
+        </form>
+
+    </div>
+</nav>
+
+
+<!-- Welcome -->
+<header class="p-6 text-center">
+    <h2 class="text-2xl font-semibold">Hello, [[${user.claims.name}]] 👋</h2>
+    <p class="text-gray-600">Here are your tasks for today</p>
+</header>
+
+<!-- Kanban Board -->
+<main class="grid grid-cols-1 md:grid-cols-3 gap-6 px-6">
+
+    <!-- To Do -->
+    <section class="bg-white rounded-2xl shadow p-4">
+        <h3 class="font-semibold text-lg mb-3">📌 To Do</h3>
+        <div class="space-y-3">
+            <div class="p-3 bg-gray-100 rounded shadow">Finish login module</div>
+            <div class="p-3 bg-gray-100 rounded shadow">Prepare slides for demo</div>
         </div>
-        <script th:inline="text">
-            var editor = CodeMirror.fromTextArea(document.getElementById('code'), {
-                lineNumbers: true, mode: 'application/json'
-            });
-        </script>
-    </body>
+        <button class="mt-4 w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600">+ Add Task</button>
+    </section>
+
+    <!-- In Progress -->
+    <section class="bg-white rounded-2xl shadow p-4">
+        <h3 class="font-semibold text-lg mb-3">⚡ In Progress</h3>
+        <div class="space-y-3">
+            <div class="p-3 bg-yellow-100 rounded shadow">Update UI design</div>
+        </div>
+        <button class="mt-4 w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600">+ Add Task</button>
+    </section>
+
+    <!-- Done -->
+    <section class="bg-white rounded-2xl shadow p-4">
+        <h3 class="font-semibold text-lg mb-3">✅ Done</h3>
+        <div class="space-y-3">
+            <div class="p-3 bg-green-100 rounded shadow">Setup database</div>
+            <div class="p-3 bg-green-100 rounded shadow">Create login page</div>
+        </div>
+        <button class="mt-4 w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600">+ Add Task</button>
+    </section>
+
+</main>
+
+</body>
 </html>
