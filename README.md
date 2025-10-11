@@ -11,7 +11,6 @@ This project demonstrates the integration of Okta OpenID Connect (OIDC) for Sing
   * **Single Sign-On (SSO)**: Allow users to sign in once and access multiple applications without re-authenticating.
   * **Task Manager**: A simple application to create, edit, and delete tasks.
   * **LearnHub**: A platform for users to access their courses and learning materials.
-  * **Heroku Deployment**: Includes configuration for easy deployment to Heroku.
 
 ## 🛠️ Prerequisites
 
@@ -77,30 +76,6 @@ Once the applications are running, you can access them at:
   * **Task Manager**: [http://localhost:8080](https://www.google.com/search?q=http://localhost:8080)
   * **LearnHub**: [http://localhost:8081](https://www.google.com/search?q=http://localhost:8081)
 
-## ☁️ Heroku Deployment
-
-You can deploy these applications directly to Heroku. The project is already configured for Heroku deployment.
-
-1.  **Create a Heroku account** if you don't have one.
-2.  **Install the Heroku CLI**.
-3.  **Log in to Heroku**:
-    ```bash
-    heroku login
-    ```
-4.  **Create a new Heroku application**:
-    ```bash
-    heroku create my-cereberus-app
-    ```
-5.  **Provision the Okta add-on**:
-    ```bash
-    heroku addons:create okta
-    ```
-6.  **Deploy the application**:
-    ```bash
-    git push heroku master
-    ```
-
-Your application will be deployed and accessible at the URL provided by Heroku.
 
 ## 📂 Project Structure
 
