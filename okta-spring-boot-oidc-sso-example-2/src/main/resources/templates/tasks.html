@@ -13,7 +13,7 @@
     <div class="flex items-center gap-4 text-lg">
         <a href="/ib" class="hover:text-gray-200 px-3 py-1 rounded hover:bg-indigo-700">Home</a>
         <a href="/profile" class="hover:text-gray-200 px-3 py-1 rounded hover:bg-indigo-700">Profile</a>
-        <a href="/tasks" class="hover:text-gray-200 px-3 py-1 rounded hover:bg-indigo-700 font-bold underline">Today's Tasks</a>
+        <a href="/tasks" class="hover:text-gray-200 px-3 py-1 rounded hover:bg-indigo-700 font-bold underline">Your Tasks</a>
         <form th:action="@{/logout}" method="post" style="display:inline;">
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
             <button type="submit" class="hover:text-gray-200 px-3 py-1 rounded hover:bg-indigo-700" style="background:none;border:none;cursor:pointer;">
@@ -24,7 +24,7 @@
 </nav>
 
 <header class="p-6 text-center">
-    <h2 class="text-2xl font-semibold">Today's Tasks</h2>
+    <h2 class="text-2xl font-semibold">Your Tasks</h2>
     <p class="text-gray-600">Tasks from your Task Manager</p>
 </header>
 
@@ -41,7 +41,7 @@
         </ul>
 
         <div th:if="${#lists.isEmpty(tasks)}" class="text-center mt-4">
-            <p class="text-gray-400 mb-4">No tasks for today. Great job!</p>
+            <p class="text-gray-400 mb-4">No tasks for now. Great job!</p>
             <a href="http://localhost:8080/tasks" target="_blank" 
                class="bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600 transition">
                Add a New Task
