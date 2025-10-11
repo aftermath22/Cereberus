@@ -35,6 +35,7 @@ public class AppController {
             System.out.println("--------------------");
         }
 
-        return "redirect:" + oktaSystemLogUrl; // your admin view name
+        // return "redirect:" + oktaSystemLogUrl; // your admin view name
+        return "admin";
     }
 }
