@@ -15,7 +15,7 @@
         <a href="http://localhost:8081/ib" class="hover:text-gray-200 px-3 py-1 rounded hover:bg-blue-700">Go to LearnHub</a>
         <form th:action="@{/logout}" method="post" style="display:inline;">
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-            <button type="submit" class="hover:text-gray-200 px-3 py-1 rounded hover:bg-blue-700" style="background:none;border:none;cursor:pointer;">
+            <button type="submit" class="hover:text-gray-200 px-3 py-1 rounded hover:bg-indigo-700" style="background:none;border:none;cursor:pointer;">
                 Logout <i class="fas fa-sign-out-alt ml-1"></i>
             </button>
         </form>

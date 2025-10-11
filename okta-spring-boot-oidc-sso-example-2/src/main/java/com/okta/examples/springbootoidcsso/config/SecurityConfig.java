@@ -99,7 +99,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             }
 
             // Build logout based on the AS issuer for your OIDC App
-            String issuer = "https://integrator-1697993.okta.com/oauth2/ausuiwcrc1sjc2osL697";
+            String issuer = "https://integrator-1697993.okta.com/oauth2/ausuivqfuseHWevPh697";
             String logoutUrl = issuer + "/v1/logout" +
                     "?id_token_hint=" + URLEncoder.encode(idToken, StandardCharsets.UTF_8.name()) +
                     "&post_logout_redirect_uri=" + URLEncoder.encode("http://localhost:8081/", StandardCharsets.UTF_8.name());
