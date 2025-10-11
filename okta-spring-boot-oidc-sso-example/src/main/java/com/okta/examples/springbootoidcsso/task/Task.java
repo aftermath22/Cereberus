@@ -1,13 +1,10 @@
 package com.okta.examples.springbootoidcsso.task;
 
-import lombok.Data;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.util.Date;
 
-@Data
 @Entity
 public class Task {
 
@@ -26,8 +23,37 @@ public class Task {
         this.created = created;
     }
 
-    // Explicitly add the setText method
+    // --- Explicit Getters and Setters ---
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getText() {
+        return text;
+    }
+
     public void setText(String text) {
         this.text = text;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
     }
 }
