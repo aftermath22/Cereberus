@@ -1,26 +1,34 @@
-# --- Build Stage ---
-FROM maven:3.8.5-openjdk-11 AS build
+# Use a multi-stage build to create a small, secure production image.
+# See https://docs.docker.com/develop/develop-images/multistage-build/
+FROM maven:3.6.3-jdk-11 AS build
+
+# Set the working directory
 WORKDIR /app
 
-COPY .mvn/ .mvn
-COPY mvnw pom.xml ./
-
-# Add executable permissions to the Maven wrapper
-RUN chmod +x ./mvnw
+# Copy the pom.xml and maven wrapper files
+COPY pom.xml .
+COPY .mvn .mvn
 
 # Download dependencies
-RUN ./mvnw dependency:go-offline
+RUN mvn dependency:go-offline
 
 # Copy the rest of your application's source code
-COPY src ./src
+COPY src src
 
 # Build the application
-RUN ./mvnw clean install -DskipTests
+RUN mvn package -DskipTests
 
-# --- Run Stage ---
+# The second stage of the build
 FROM openjdk:11-jre-slim
-WORKDIR /app
-COPY --from=build /app/target/*.jar /app/app.jar
 
+# Set the working directory
+WORKDIR /app
+
+# Copy the jar file from the build stage
+COPY --from=build /app/target/*.jar app.jar
+
+# Expose the port the app runs on
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "/app/app.jar"]
+
+# Set the entrypoint to run the application
+ENTRYPOINT ["java", "-jar", "app.jar"]
