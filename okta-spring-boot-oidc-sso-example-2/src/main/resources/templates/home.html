@@ -3,13 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Learning Platform</title>
-    <script src="https://cdn.tailwindcss.com">
-    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="bg-gray-50 font-sans">
 
-<!-- Navbar -->
 <nav class="bg-indigo-600 p-4 text-white flex justify-between items-center shadow">
     <h1 class="text-xl font-bold"><a href="/ib">LearnHub</a></h1>
     <div class="flex items-center gap-4 text-lg">
@@ -25,19 +23,11 @@
     </div>
 </nav>
 
-
-
-<!-- Hero -->
 <header class="p-6 text-center">
-    <h2 class="text-2xl font-semibold">Welcome back, [[${user.claims.name}]] 🎓</h2>
+    <h2 class="text-2xl font-semibold">Welcome back, [[${user.claims.name}]] 👋</h2>
     <p class="text-gray-600">Keep learning and achieve your goals 🚀</p>
-    <div class="mt-4 flex justify-center gap-4">
-        <a href="/tasks" class="bg-indigo-500 text-white px-4 py-2 rounded-lg shadow hover:bg-indigo-600">View Today's Tasks</a>
-        <a href="/profile" class="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg shadow hover:bg-gray-300">Profile</a>
-    </div>
-</header>
+    </header>
 
-<!-- My Courses -->
 <section class="px-6">
     <h3 class="text-xl font-bold mb-4">📚 My Courses</h3>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -61,7 +51,6 @@
     </div>
 </section>
 
-<!-- Recommended -->
 <section class="px-6 mt-8">
     <h3 class="text-xl font-bold mb-4">✨ Recommended Courses</h3>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">

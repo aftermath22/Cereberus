@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <title>Today's Tasks</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="bg-gray-50 font-sans">
+
 <nav class="bg-indigo-600 p-4 text-white flex justify-between items-center shadow">
     <h1 class="text-xl font-bold"><a href="/ib">LearnHub</a></h1>
     <div class="flex items-center gap-4 text-lg">
@@ -20,14 +22,12 @@
         </form>
     </div>
 </nav>
+
 <header class="p-6 text-center">
     <h2 class="text-2xl font-semibold">Today's Tasks</h2>
     <p class="text-gray-600">Tasks from your Task Manager</p>
-    <div class="mt-4 flex justify-center gap-4">
-        <a href="/ib" class="bg-indigo-500 text-white px-4 py-2 rounded-lg shadow hover:bg-indigo-600">Home</a>
-        <a href="/profile" class="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg shadow hover:bg-gray-300">Profile</a>
-    </div>
 </header>
+
 <main class="flex justify-center px-6">
     <div class="bg-white rounded-2xl shadow-lg p-6 w-full max-w-md">
         <ul class="space-y-4">
@@ -39,8 +39,16 @@
                 <a th:href="@{'http://localhost:8080/tasks/edit/' + ${task.id}}" target="_blank" class="text-blue-600 hover:underline bg-blue-100 px-2 py-1 rounded">Edit in Task Manager</a>
             </li>
         </ul>
-        <div th:if="${#lists.isEmpty(tasks)}" class="text-gray-400 text-center mt-4">No tasks for today.</div>
+
+        <div th:if="${#lists.isEmpty(tasks)}" class="text-center mt-4">
+            <p class="text-gray-400 mb-4">No tasks for today. Great job!</p>
+            <a href="http://localhost:8080/tasks" target="_blank" 
+               class="bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600 transition">
+               Add a New Task
+            </a>
+        </div>
     </div>
 </main>
+
 </body>
 </html>
