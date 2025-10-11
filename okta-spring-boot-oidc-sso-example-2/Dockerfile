@@ -1,39 +1,34 @@
-# Stage 1: Build the application using Maven
-FROM maven:3.8.5-openjdk-11 AS build
+# Use a multi-stage build to create a small, secure production image.
+# See https://docs.docker.com/develop/develop-images/multistage-build/
+FROM maven:3.6.3-jdk-11 AS build
 
-# Create a non-root user and group
-RUN groupadd -r appgroup && useradd -r -g appgroup appuser
-
-# Create app directory and set ownership
+# Set the working directory
 WORKDIR /app
-RUN chown -R appuser:appgroup /app
 
-# Switch to the non-root user
-USER appuser
-
-# Copy the pom.xml and the source code
+# Copy the pom.xml and maven wrapper files
 COPY pom.xml .
-COPY src ./src
+COPY .mvn .mvn
 
-# Build the application, skipping tests for faster builds
-RUN mvn clean install -DskipTests
+# Download dependencies
+RUN mvn dependency:go-offline
 
-# Stage 2: Create the final, smaller image with only the JRE
+# Copy the rest of your application's source code
+COPY src src
+
+# Build the application
+RUN mvn package -DskipTests
+
+# The second stage of the build
 FROM openjdk:11-jre-slim
 
-# Create the same non-root user and group
-RUN groupadd -r appgroup && useradd -r -g appgroup appuser
-
+# Set the working directory
 WORKDIR /app
 
-# Copy the built JAR file from the 'build' stage and set ownership
-COPY --from=build --chown=appuser:appgroup /app/target/spring-boot-oidc-sso-0.0.1-SNAPSHOT.jar app.jar
+# Copy the jar file from the build stage
+COPY --from=build /app/target/*.jar app.jar
 
-# Switch to the non-root user for running the application
-USER appuser
-
-# Expose the port the app will run on (Render will set this via PORT env var)
+# Expose the port the app runs on
 EXPOSE 8080
 
-# Command to run the application
+# Set the entrypoint to run the application
 ENTRYPOINT ["java", "-jar", "app.jar"]
