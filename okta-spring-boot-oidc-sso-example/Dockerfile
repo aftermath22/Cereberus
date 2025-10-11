@@ -3,15 +3,16 @@ FROM maven:3.8.5-openjdk-11 AS build
 
 # Create a non-root user and group
 RUN groupadd -r appgroup && useradd -r -g appgroup appuser
+# *** THIS IS THE FIX: Grant ownership of the home directory to the new user ***
+RUN chown -R appuser:appgroup /home/appuser
 
-# Create app directory and set ownership
+# Create app directory
 WORKDIR /app
-RUN chown -R appuser:appgroup /app
 
 # Switch to the non-root user
 USER appuser
 
-# Copy the pom.xml and the source code
+# Copy the pom.xml and the source code (now as appuser)
 COPY pom.xml .
 COPY src ./src
 
