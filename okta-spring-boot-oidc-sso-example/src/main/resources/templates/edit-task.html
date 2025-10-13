@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="bg-gray-100 font-sans">
+
 <nav class="bg-blue-600 p-4 text-white flex justify-between items-center shadow">
     <h1 class="text-xl font-bold"><a href="/ia">Task Manager</a></h1>
     <div class="flex items-center gap-4 text-lg">
@@ -21,23 +22,24 @@
         </form>
     </div>
 </nav>
+
 <header class="p-6 text-center">
     <h2 class="text-2xl font-semibold">Edit Task</h2>
 </header>
 <main class="flex flex-col items-center px-6">
     <div class="bg-white rounded-2xl shadow-lg p-6 w-full max-w-lg">
-        <form th:action="@{'/tasks/edit/' + ${task.id}}" method="post" class="flex flex-col gap-4">
+        <form th:action="@{'/ia/edit/' + ${task.id}}" method="post" class="flex flex-col gap-4">
             <div>
-                <label class="block text-gray-700">Description</label>
-                <input name="description" th:value="${task.description}" class="w-full px-3 py-2 border rounded" required />
+                <label for="description" class="block text-gray-700">Description</label>
+                <input id="description" name="description" th:value="${task.description}" class="w-full px-3 py-2 border rounded" required />
             </div>
             <div>
-                <label class="block text-gray-700">Date</label>
-                <input name="date" type="date" th:value="${task.date}" class="w-full px-3 py-2 border rounded" required />
+                <label for="date" class="block text-gray-700">Date</label>
+                <input id="date" name="date" type="date" th:value="${task.date}" class="w-full px-3 py-2 border rounded" required />
             </div>
             <div class="flex gap-4">
                 <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-600">Save</button>
-                <a href="/tasks" class="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg shadow hover:bg-gray-300">Cancel</a>
+                <a href="/ia" class="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg shadow hover:bg-gray-300">Cancel</a>
             </div>
         </form>
     </div>
