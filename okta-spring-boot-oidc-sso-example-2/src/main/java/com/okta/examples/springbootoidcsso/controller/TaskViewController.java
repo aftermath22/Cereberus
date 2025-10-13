@@ -19,11 +19,11 @@ import org.springframework.web.client.RestTemplate;
 @Controller
 public class TaskViewController {
     @Value("${app.base-url}")
-    private String taskManagerBaseUrl;
+    private String taskManagerUrl;
 
     @GetMapping("/tasks")
     public String userTasks(@AuthenticationPrincipal OidcUser user, Model model) {
-        String apiUrl = taskManagerBaseUrl + "/api/tasks";
+        String apiUrl = taskManagerUrl + "/api/tasks";
         RestTemplate restTemplate = new RestTemplate();
         List<Map<String, Object>> tasks = Arrays.asList();
         try {
@@ -38,6 +38,8 @@ public class TaskViewController {
             System.out.println("[ERROR] Failed to fetch tasks: " + e.getMessage());
         }
         model.addAttribute("tasks", tasks);
+        // Add the taskManagerUrl to the model
+        model.addAttribute("taskManagerUrl", taskManagerUrl); 
         return "tasks";
     }
 }
