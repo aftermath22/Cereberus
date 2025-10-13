@@ -1,95 +1,164 @@
+# Cereberus: Task Manager & LearnHub
+
+Welcome to **Cereberus**, a project that demonstrates a powerful integration between two distinct Spring Boot applications, secured with Okta for Single Sign-On (SSO). The project consists of two main components:
+
+  * **Task Manager (`okta-spring-boot-oidc-sso-example`)**: A web application for creating, editing, and deleting personal tasks.
+  * **LearnHub (`okta-spring-boot-oidc-sso-example-2`)**: A separate web application that can securely view tasks from the Task Manager, providing a seamless user experience across different services.
+
+This project is an excellent example of how microservices can communicate with each other while maintaining a unified authentication system.
 
 -----
 
-# Cereberus - Spring Boot + Okta SSO Integration
+## Getting Started
 
-This project demonstrates the integration of Okta OpenID Connect (OIDC) for Single Sign-On (SSO) with Spring Boot applications. It includes two example applications, "Task Manager" and "LearnHub," showcasing how users can authenticate with Okta and access protected resources.
+To get this project up and running, you'll need a few prerequisites.
 
-## 🚀 Features
+### Prerequisites
 
-  * **Okta OIDC Integration**: Secure your Spring Boot applications using Okta as an identity provider.
-  * **Single Sign-On (SSO)**: Allow users to sign in once and access multiple applications without re-authenticating.
-  * **Task Manager**: A simple application to create, edit, and delete tasks.
-  * **LearnHub**: A platform for users to access their courses and learning materials.
+  * **Okta Developer Account**: You'll need a free developer account from [Okta](https://developer.okta.com/signup/).
+  * **Java 11+**: Make sure you have a compatible Java Development Kit (JDK) installed.
+  * **Maven**: The project uses Maven for dependency management.
 
-## 🛠️ Prerequisites
+### Okta Configuration
 
-Before you begin, ensure you have the following installed:
+Before you can run the applications, you need to set up an OIDC application in your Okta Developer Console.
 
-  * **Java 11+**: The application is built using Java 11.
-  * **Maven**: Used for building and managing the project dependencies.
-  * **Okta Developer Account**: You will need a free Okta developer account to create and configure your OIDC application.
+1.  **Create a New Application**:
 
-## ⚙️ Configuration
+      * In your Okta dashboard, go to **Applications** \> **Applications** and click **Create App Integration**.
+      * Select **OIDC - OpenID Connect** as the sign-in method.
+      * Choose **Web Application** as the application type.
 
-1.  **Clone the repository**:
+2.  **Configure Your Application**:
 
-    ```bash
-    git clone https://github.com/cereberus/Cereberus-improvements.git
-    cd Cereberus-improvements
-    ```
-
-2.  **Okta Application Configuration**:
-
-      * Log in to your Okta developer account.
-      * Create a new OIDC application.
-      * Note the **Client ID**, **Client Secret**, and **Issuer** URI.
-      * Update the `application.properties` file in each application with your Okta credentials:
-        ```properties
-        okta.oauth2.issuer=<your-okta-issuer-uri>
-        okta.oauth2.client-id=<your-okta-client-id>
-        okta.oauth2.client-secret=<your-okta-client-secret>
+      * **App integration name**: Give your application a name, like `Cereberus`.
+      * **Sign-in redirect URIs**: Add the URIs for both local development and your deployed applications. These are the locations Okta will redirect to after a successful login.
         ```
+        http://localhost:8080/login/oauth2/code/okta
+        http://localhost:8081/login/oauth2/code/okta
+        https://cereberus-task-manager.onrender.com/login/oauth2/code/okta
+        https://cereberus-learnhub.onrender.com/login/oauth2/code/okta
+        ```
+      * **Sign-out redirect URIs**: Add the base URLs for your applications. Okta will redirect to these after a successful logout.
+        ```
+        http://localhost:8080
+        http://localhost:8081
+        https://cereberus-task-manager.onrender.com
+        https://cereberus-learnhub.onrender.com
+        ```
+      * **Assignments**: Choose **Allow everyone in your organization to access** for simplicity, or assign specific users if you prefer.
 
-## 🏃‍♀️ Running the Applications
+3.  **Save Your Credentials**:
 
-You can run each application using the provided shell script or with Maven.
-
-### Task Manager (Port 8080)
-
-  * **Using the script**:
-    ```bash
-    cd okta-spring-boot-oidc-sso-example
-    ./run_app.sh --ci <client-id> --cs <client-secret> --is <issuer>
-    ```
-  * **Using Maven**:
-    ```bash
-    cd okta-spring-boot-oidc-sso-example
-    mvn spring-boot:run
-    ```
-
-### LearnHub (Port 8081)
-
-  * **Using the script**:
-    ```bash
-    cd okta-spring-boot-oidc-sso-example-2
-    ./run_app.sh --ci <client-id> --cs <client-secret> --is <issuer> --po 8081
-    ```
-  * **Using Maven**:
-    ```bash
-    cd okta-spring-boot-oidc-sso-example-2
-    mvn spring-boot:run -Dserver.port=8081
-    ```
-
-Once the applications are running, you can access them at:
-
-  * **Task Manager**: [http://localhost:8080](https://www.google.com/search?q=http://localhost:8080)
-  * **LearnHub**: [http://localhost:8081](https://www.google.com/search?q=http://localhost:8081)
-
-
-## 📂 Project Structure
-
-The project contains two main applications:
-
-  * `okta-spring-boot-oidc-sso-example`: The **Task Manager** application.
-  * `okta-spring-boot-oidc-sso-example-2`: The **LearnHub** application.
-
-Each application follows a standard Spring Boot project structure.
-
-## 🤝 Contributing
-
-Contributions are welcome\! If you find any issues or have suggestions for improvements, please open an issue or create a pull request.
+      * After saving, you will be taken to your application's page. Take note of the **Client ID** and **Client secret**.
+      * You will also need your **Okta domain** (e.g., `dev-123456.okta.com`). The **Issuer URI** is typically `https://<Your-Okta-Domain>/oauth2/default`.
 
 -----
 
-I hope this `README.md` is helpful\! Let me know if you have any other questions or need further assistance with your project. Happy coding\! 😊
+## Running Locally
+
+To run the applications on your local machine, you'll need to configure your Okta credentials in both projects.
+
+1.  **Configure the Task Manager (`okta-spring-boot-oidc-sso-example`)**:
+
+      * Open the `src/main/resources/application.properties` file.
+      * Update the Okta properties with the credentials you saved earlier.
+      * The base URLs should point to your local servers.
+
+    <!-- end list -->
+
+    ```properties
+    # Okta Configuration
+    okta.oauth2.issuer=https://<Your-Okta-Domain>/oauth2/default
+    okta.oauth2.clientId=<Your-Client-ID>
+    okta.oauth2.clientSecret=<Your-Client-Secret>
+
+    # Application URLs
+    app.base-url=http://localhost:8080
+    learnhub.base-url=http://localhost:8081
+
+    # For running behind a proxy (like Render)
+    server.forward-headers-strategy=native
+    ```
+
+2.  **Configure the LearnHub (`okta-spring-boot-oidc-sso-example-2`)**:
+
+      * Open `src/main/resources/application.properties` in the second project.
+      * Use the **same** Okta credentials as the Task Manager.
+      * The base URLs will be the same as well.
+
+    <!-- end list -->
+
+    ```properties
+    # Okta Configuration
+    okta.oauth2.issuer=https://<Your-Okta-Domain>/oauth2/default
+    okta.oauth2.clientId=<Your-Client-ID>
+    okta.oauth2.clientSecret=<Your-Client-Secret>
+
+    # Application URLs
+    app.base-url=http://localhost:8080
+    learnhub.base-url=http://localhost:8081
+
+    # For running behind a proxy (like Render)
+    server.forward-headers-strategy=native
+    ```
+
+3.  **Run the Applications**:
+
+      * Open a terminal and navigate to the `okta-spring-boot-oidc-sso-example` directory and run:
+        ```bash
+        ./mvnw spring-boot:run
+        ```
+      * Open a *second* terminal, navigate to `okta-spring-boot-oidc-sso-example-2`, and run:
+        ```bash
+        ./mvnw spring-boot:run
+        ```
+      * The Task Manager will be available at `http://localhost:8080/ia` and LearnHub at `http://localhost:8081/ib`.
+
+-----
+
+## Deployment to Render
+
+This project is configured for easy deployment on **Render**.
+
+1.  **Create a New Web Service on Render**:
+
+      * In your Render dashboard, click **New +** \> **Web Service**.
+      * Connect your GitHub repository.
+
+2.  **Configure the Task Manager Service**:
+
+      * **Name**: `cereberus-task-manager`
+      * **Root Directory**: `okta-spring-boot-oidc-sso-example`
+      * **Build Command**: `./mvnw clean install`
+      * **Start Command**: `java -jar target/*.jar`
+
+3.  **Configure the LearnHub Service**:
+
+      * Create a *second* web service on Render.
+      * **Name**: `cereberus-learnhub`
+      * **Root Directory**: `okta-spring-boot-oidc-sso-example-2`
+      * **Build Command**: `./mvnw clean install`
+      * **Start Command**: `java -jar target/*.jar`
+
+4.  **Set Environment Variables**:
+
+      * For **both** services, go to the **Environment** tab and add the following environment variables.
+      * **Note**: `OKTA_OAUTH2_ISSUER` has `/oauth2/default` appended to it.
+
+| Key | Value |
+| :--- | :--- |
+| `OKTA_OAUTH2_ISSUER` | `https://<Your-Okta-Domain>/oauth2/default` |
+| `OKTA_OAUTH2_CLIENT_ID` | `<Your-Client-ID>` |
+| `OKTA_OAUTH2_CLIENT_SECRET` | `<Your-Client-Secret>` |
+| `APP_BASE-URL` | `https://cereberus-task-manager.onrender.com` |
+| `LEARNHUB_BASE-URL` | `https://cereberus-learnhub.onrender.com` |
+
+-----
+
+## Live Endpoints
+
+Once deployed, your applications will be available at the following URLs:
+
+  * **Task Manager**: [https://cereberus-task-manager.onrender.com/ia](https://cereberus-task-manager.onrender.com/ia)
+  * **LearnHub**: [https://cereberus-learnhub.onrender.com/ib](https://cereberus-learnhub.onrender.com/ib)
