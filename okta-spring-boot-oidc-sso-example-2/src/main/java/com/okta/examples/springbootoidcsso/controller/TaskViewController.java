@@ -18,7 +18,7 @@ import org.springframework.web.client.RestTemplate;
 
 @Controller
 public class TaskViewController {
-    @Value("${task-manager.base-url}")
+    @Value("${learnhub.base-url}")
     private String taskManagerBaseUrl;
 
     @GetMapping("/tasks")
