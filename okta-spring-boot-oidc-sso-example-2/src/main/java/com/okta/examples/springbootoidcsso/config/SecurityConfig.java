@@ -1,3 +1,4 @@
+
 package com.okta.examples.springbootoidcsso.config;
 
 import java.io.IOException;
