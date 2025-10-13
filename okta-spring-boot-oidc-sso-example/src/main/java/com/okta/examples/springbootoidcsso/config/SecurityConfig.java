@@ -31,55 +31,51 @@ import org.springframework.security.web.authentication.logout.LogoutSuccessHandl
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true) // Enable method-level security
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
     @Value("${okta.oauth2.issuer}")
     private String issuer;
+    
+    @Value("${app.base-url}")
+    private String appBaseUrl;
 
-    // This configuration is for the API endpoints
     @Configuration
     @Order(1)
     public static class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http
-                .antMatcher("/api/**") // Apply this config only to /api/**
+                .antMatcher("/api/**")
                 .authorizeRequests()
                     .anyRequest().authenticated()
                 .and()
-                .oauth2ResourceServer().jwt(); // Use resource server with JWT
+                .oauth2ResourceServer().jwt();
         }
     }
 
-    // This configuration is for the user-facing web pages
     @Configuration
     public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         private LogoutSuccessHandler oidcLogoutSuccessHandler() {
-            return new OidcLogoutSuccessHandler();
+            return new OidcLogoutSuccessHandler(issuer, appBaseUrl);
         }
 
         @Bean
         public GrantedAuthoritiesMapper userAuthoritiesMapper() {
             return (authorities) -> {
                 Set<GrantedAuthority> mappedAuthorities = new HashSet<>();
-
                 authorities.forEach(authority -> {
                     if (authority instanceof OidcUserAuthority) {
                         OidcUserAuthority oidcUserAuthority = (OidcUserAuthority) authority;
                         OidcIdToken idToken = oidcUserAuthority.getIdToken();
                         List<String> groups = idToken.getClaimAsStringList("groups");
-
                         if (groups != null) {
-                            groups.forEach(group ->
-                                    mappedAuthorities.add(new SimpleGrantedAuthority(group))
-                            );
+                            groups.forEach(group -> mappedAuthorities.add(new SimpleGrantedAuthority(group)));
                         }
                     }
                     mappedAuthorities.add(authority);
                 });
-
                 return mappedAuthorities;
             };
         }
@@ -91,15 +87,21 @@ public class SecurityConfig {
                     .antMatchers("/", "/css/**", "/js/**").permitAll()
                     .anyRequest().authenticated()
                 .and()
-                    .oauth2Login() // Use the standard login flow
+                    .oauth2Login()
                 .and()
                     .logout()
                     .logoutSuccessHandler(oidcLogoutSuccessHandler());
         }
     }
 
-    // Inner class to handle Okta logout
-    private class OidcLogoutSuccessHandler implements LogoutSuccessHandler {
+    private static class OidcLogoutSuccessHandler implements LogoutSuccessHandler {
+        private final String issuer;
+        private final String postLogoutRedirectUri;
+
+        public OidcLogoutSuccessHandler(String issuer, String postLogoutRedirectUri) {
+            this.issuer = issuer;
+            this.postLogoutRedirectUri = postLogoutRedirectUri;
+        }
 
         @Override
         public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -111,11 +113,10 @@ public class SecurityConfig {
                 }
             }
 
-            // Build the logout URL
             String logoutUrl = issuer + "/v1/logout?id_token_hint=" +
                 URLEncoder.encode(idToken, StandardCharsets.UTF_8.name()) +
                 "&post_logout_redirect_uri=" +
-                URLEncoder.encode("http://localhost:8080/", StandardCharsets.UTF_8.name());
+                URLEncoder.encode(postLogoutRedirectUri, StandardCharsets.UTF_8.name());
 
             response.sendRedirect(logoutUrl);
         }
