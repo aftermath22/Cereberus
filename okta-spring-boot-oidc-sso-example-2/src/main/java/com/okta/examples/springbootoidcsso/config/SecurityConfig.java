@@ -29,7 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Value("${okta.oauth2.client-id}")
     private String clientId;
 
-    @Value("${app.base-url}")
+    @Value("${learnhub.base-url}")
     private String appBaseUrl;
 
     @Override
