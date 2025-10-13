@@ -36,13 +36,13 @@
                     <span class="font-semibold text-indigo-600" th:text="${task.description}">Task Description</span>
                     <span class="text-gray-500 text-sm ml-2" th:text="${task.date}">Date</span>
                 </div>
-                <a th:href="@{'http://localhost:8080/tasks/edit/' + ${task.id}}" target="_blank" class="text-blue-600 hover:underline bg-blue-100 px-2 py-1 rounded">Edit in Task Manager</a>
+                <a th:href="@{${taskManagerUrl} + '/tasks/edit/' + ${task.id}}" target="_blank" class="text-blue-600 hover:underline bg-blue-100 px-2 py-1 rounded">Edit in Task Manager</a>
             </li>
         </ul>
 
         <div th:if="${#lists.isEmpty(tasks)}" class="text-center mt-4">
             <p class="text-gray-400 mb-4">No tasks for now. Great job!</p>
-            <a href="http://localhost:8080/tasks" target="_blank" 
+            <a th:href="${taskManagerUrl} + '/tasks'" target="_blank" 
                class="bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600 transition">
                Add a New Task
             </a>

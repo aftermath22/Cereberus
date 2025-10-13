@@ -1,5 +1,6 @@
 package com.okta.examples.springbootoidcsso.controller;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
@@ -16,10 +17,15 @@ import com.okta.examples.springbootoidcsso.task.TaskRepository;
 @Controller
 @RequestMapping("/tasks")
 public class TaskViewController {
+
+    @Value("${learnhub.base-url}")
+    private String learnhubUrl;
+
     @GetMapping
     public String listTasks(@AuthenticationPrincipal OidcUser user, Model model) {
         String userId = user.getSubject();
         model.addAttribute("tasks", TaskRepository.getTasks(userId));
+        model.addAttribute("learnhubUrl", learnhubUrl);
         return "tasks";
     }
 
@@ -35,6 +41,7 @@ public class TaskViewController {
         String userId = user.getSubject();
         Task task = TaskRepository.getTask(userId, id);
         model.addAttribute("task", task);
+        model.addAttribute("learnhubUrl", learnhubUrl);
         return "edit-task";
     }
 
