@@ -14,7 +14,7 @@ public class HomeController {
 
     ObjectMapper mapper = new ObjectMapper();
 
-    @GetMapping("/ib")
+    @GetMapping("/ia")
     public ModelAndView home(@AuthenticationPrincipal OidcUser user) throws JsonProcessingException {
         ModelAndView mav = new ModelAndView();
         if (user != null) {
