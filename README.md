@@ -9,6 +9,39 @@ This project is an excellent example of how microservices can communicate with e
 
 -----
 
+## Understanding Single Sign-On (SSO)
+
+Single Sign-On is an authentication scheme that allows a user to log in with a single set of credentials to multiple independent software systems. Instead of having to remember different usernames and passwords for each application, the user authenticates once and is then seamlessly granted access to all connected applications.
+
+### Common Use Cases
+
+  * **Enterprise Environments**: An employee logs into their company's main portal once a day. With SSO, this single login gives them access to their email, HR software, internal wikis, and other tools without needing to log in to each one individually.
+  * **Customer-Facing Product Suites**: Companies like Google and Microsoft use SSO to provide a unified experience across their products. A single login to your Google account gives you access to Gmail, Google Drive, Google Calendar, and more.
+  * **Cloud Service Integration**: Users can access multiple cloud services (like Salesforce, Slack, and AWS) from different vendors using their organization's single set of credentials, improving both security and user experience.
+
+### How This Project Demonstrates SSO
+
+This project simulates a common real-world scenario where a user needs to interact with two separate but related services.
+
+#### Scenario 1: Seamless Cross-Application Workflow
+
+Imagine a user logs into the **Task Manager** to review their daily schedule. They see a task like "Complete Q4 Compliance Training." Within the Task Manager, there's a link to "View training materials in LearnHub." When the user clicks this link, they are instantly taken to the **LearnHub** application and are already logged in. They didn't have to enter their credentials again. This seamless transition is the core benefit of SSO, allowing users to move between applications without friction.
+
+#### Scenario 2: Centralized Logout
+
+The user has finished their work for the day, with both the Task Manager and LearnHub open in different browser tabs. They click the "Logout" button in the **LearnHub** application. This single action logs them out of their central Okta session. If they then switch to the Task Manager tab and try to refresh the page or perform an action, they will be automatically redirected to the login page. This demonstrates that logging out from one application has securely terminated their session across all connected applications.
+
+### Scalability and Ease of Integration
+
+A major advantage of this architecture is its scalability. Imagine you want to add a third application, such as a "Billing Portal," to this ecosystem. The process is remarkably simple:
+
+1.  **Register New Endpoints**: In your Okta application settings, you would simply add the new sign-in and sign-out redirect URIs for the Billing Portal (e.g., `https://cereberus-billing.onrender.com/...`).
+2.  **Copy Security Configuration**: You can reuse the same `SecurityConfig.java` and Okta properties from the existing applications. This configuration is already set up to handle authentication and role-based authorization (differentiating between regular users and admins).
+
+With just these two steps, your new application is instantly integrated into the SSO system, inheriting the same robust security and seamless user experience without requiring significant code changes.
+
+-----
+
 ## Getting Started
 
 To get this project up and running, you'll need a few prerequisites.
@@ -78,7 +111,7 @@ To run the applications on your local machine, you'll need to configure your Okt
     learnhub.base-url=http://localhost:8081
 
     # For running behind a proxy (like Render)
-    server.forward-headers-strategy=native
+    server.use-forward-headers=true
     ```
 
 2.  **Configure the LearnHub (`okta-spring-boot-oidc-sso-example-2`)**:
@@ -100,7 +133,7 @@ To run the applications on your local machine, you'll need to configure your Okt
     learnhub.base-url=http://localhost:8081
 
     # For running behind a proxy (like Render)
-    server.forward-headers-strategy=native
+    server.use-forward-headers=true
     ```
 
 3.  **Run the Applications**:
@@ -151,8 +184,8 @@ This project is configured for easy deployment on **Render**.
 | `OKTA_OAUTH2_ISSUER` | `https://<Your-Okta-Domain>/oauth2/default` |
 | `OKTA_OAUTH2_CLIENT_ID` | `<Your-Client-ID>` |
 | `OKTA_OAUTH2_CLIENT_SECRET` | `<Your-Client-Secret>` |
-| `APP_BASE-URL` | `https://cereberus-task-manager.onrender.com` |
-| `LEARNHUB_BASE-URL` | `https://cereberus-learnhub.onrender.com` |
+| `APP_BASE_URL` | `https://cereberus-task-manager.onrender.com` |
+| `LEARNHUB_BASE_URL` | `https://cereberus-learnhub.onrender.com` |
 
 -----
 
