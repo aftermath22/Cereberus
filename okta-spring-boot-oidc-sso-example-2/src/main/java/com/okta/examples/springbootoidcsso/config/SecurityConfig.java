@@ -114,9 +114,9 @@ public class SecurityConfig {
             }
 
             String logoutUrl = issuer + "/v1/logout?id_token_hint=" +
-                URLEncoder.encode(idToken, StandardCharsets.UTF_8.name()) +
-                "&post_logout_redirect_uri=" +
-                URLEncoder.encode(postLogoutRedirectUri, StandardCharsets.UTF_8.name());
+                    URLEncoder.encode(idToken, StandardCharsets.UTF_8.name()) +
+                    "&post_logout_redirect_uri=" +
+                    URLEncoder.encode(postLogoutRedirectUri, StandardCharsets.UTF_8.name());
 
             response.sendRedirect(logoutUrl);
         }
