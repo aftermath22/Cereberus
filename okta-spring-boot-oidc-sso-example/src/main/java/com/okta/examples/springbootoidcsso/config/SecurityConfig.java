@@ -39,7 +39,7 @@ public class SecurityConfig {
 
     @Value("${okta.oauth2.issuer}")
     private String issuer;
-    
+
     @Value("${app.base-url}")
     private String appBaseUrl;
 
@@ -49,11 +49,11 @@ public class SecurityConfig {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http
-                .antMatcher("/api/**")
-                .authorizeRequests()
+                    .antMatcher("/api/**")
+                    .authorizeRequests()
                     .anyRequest().authenticated()
-                .and()
-                .oauth2ResourceServer().jwt();
+                    .and()
+                    .oauth2ResourceServer().jwt();
         }
     }
 
@@ -86,13 +86,16 @@ public class SecurityConfig {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http
-                .authorizeRequests()
+                    .authorizeRequests()
                     .antMatchers("/", "/css/**", "/js/**").permitAll()
                     .anyRequest().authenticated()
-                .and()
+                    .and()
                     .oauth2Login()
-                .and()
+                    .and()
                     .logout()
+                    .invalidateHttpSession(true)
+                    .clearAuthentication(true)
+                    .deleteCookies("JSESSIONID")
                     .logoutSuccessHandler(oidcLogoutSuccessHandler());
         }
     }
@@ -107,7 +110,8 @@ public class SecurityConfig {
         }
 
         @Override
-        public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+        public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response,
+                Authentication authentication) throws IOException, ServletException {
             String idToken = null;
             if (authentication instanceof OAuth2AuthenticationToken) {
                 OAuth2AuthenticationToken oauthToken = (OAuth2AuthenticationToken) authentication;
@@ -115,6 +119,9 @@ public class SecurityConfig {
                     idToken = ((DefaultOidcUser) oauthToken.getPrincipal()).getIdToken().getTokenValue();
                 }
             }
+
+            // Clear the session
+            request.getSession().invalidate();
 
             String logoutUrl = issuer + "/v1/logout?id_token_hint=" +
                     URLEncoder.encode(idToken, StandardCharsets.UTF_8.name()) +
