@@ -40,7 +40,7 @@ public class SecurityConfig {
     @Value("${okta.oauth2.issuer}")
     private String issuer;
 
-    @Value("${app.base-url}")
+    @Value("${learnhub.base-url}")
     private String appBaseUrl;
 
     @Configuration
